@@ -35,5 +35,5 @@ CREATE TABLE IF NOT EXISTS trades (
 );
 
 -- Create an Index on user_id in trades and user_stocks for faster queries
-CREATE INDEX IF NOT EXISTS idx_user_id_on_trades ON trades(user_id);
-CREATE INDEX IF NOT EXISTS idx_user_id_on_user_stocks ON user_stocks(user_id);
+CREATE INDEX idx_user_id_on_trades ON trades(user_id);
+CREATE INDEX idx_user_id_on_user_stocks ON user_stocks(user_id);
