@@ -1,8 +1,8 @@
 -- Create the Database if it doesn't exist
-CREATE DATABASE IF NOT EXISTS stock_trading_bot;
+CREATE DATABASE IF NOT EXISTS stock_trading;
 
 -- Switch to the newly created database
-USE stock_trading_bot;
+USE stock_trading;
 
 -- Create the Users Table if it doesn't exist
 CREATE TABLE IF NOT EXISTS users (
