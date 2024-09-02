@@ -1,8 +1,8 @@
-package com.mikrelin.spring_boot_backend.service;
+package com.mikrelin.springbootbackend.service;
 
-import com.mikrelin.spring_boot_backend.entity.Trade;
-import com.mikrelin.spring_boot_backend.entity.User;
-import com.mikrelin.spring_boot_backend.entity.UserStock;
+import com.mikrelin.springbootbackend.entity.Trade;
+import com.mikrelin.springbootbackend.entity.User;
+import com.mikrelin.springbootbackend.entity.UserStock;
 
 import java.util.List;
 

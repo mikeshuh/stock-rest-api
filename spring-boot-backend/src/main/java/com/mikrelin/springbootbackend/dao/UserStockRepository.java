@@ -1,6 +1,6 @@
-package com.mikrelin.spring_boot_backend.dao;
+package com.mikrelin.springbootbackend.dao;
 
-import com.mikrelin.spring_boot_backend.entity.UserStock;
+import com.mikrelin.springbootbackend.entity.UserStock;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserStockRepository extends JpaRepository<UserStock, Integer> {

@@ -1,4 +1,4 @@
-package com.mikrelin.spring_boot_backend.rest;
+package com.mikrelin.springbootbackend.rest;
 
 
 import org.springframework.web.bind.annotation.GetMapping;

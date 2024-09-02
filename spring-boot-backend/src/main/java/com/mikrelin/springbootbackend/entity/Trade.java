@@ -1,4 +1,4 @@
-package com.mikrelin.spring_boot_backend.entity;
+package com.mikrelin.springbootbackend.entity;
 
 import jakarta.persistence.*;
 

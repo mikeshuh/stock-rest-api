@@ -1,6 +1,6 @@
-package com.mikrelin.spring_boot_backend.service;
+package com.mikrelin.springbootbackend.service;
 
-import com.mikrelin.spring_boot_backend.entity.UserStock;
+import com.mikrelin.springbootbackend.entity.UserStock;
 
 public class UserStockServiceImpl implements UserStockService {
 
