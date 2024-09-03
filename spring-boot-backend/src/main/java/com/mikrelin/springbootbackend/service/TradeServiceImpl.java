@@ -10,7 +10,7 @@ public class TradeServiceImpl implements TradeService {
     }
 
     @Override
-    public void deleteById(int id) {
+    public void deleteByTradeId(int id) {
 
     }
 }

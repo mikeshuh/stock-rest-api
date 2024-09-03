@@ -6,5 +6,5 @@ public interface UserStockService {
 
     UserStock save(UserStock userStock);
 
-    void deleteById(int id);
+    void deleteByUserStockId(int id);
 }

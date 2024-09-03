@@ -6,5 +6,5 @@ public interface TradeService {
 
     Trade save(Trade trade);
 
-    void deleteById(int id);
+    void deleteByTradeId(int id);
 }

@@ -1,5 +1,6 @@
 package com.mikrelin.springbootbackend.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
@@ -18,10 +19,11 @@ public class Trade {
             cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH}
     )
     @JoinColumn(name = "user_id")
+    @JsonBackReference
     private User user;
 
     @Column(name = "stock_symbol")
-    private int stockSymbol;
+    private String stockSymbol;
 
     @Column(name = "trade_type")
     private String tradeType;
@@ -37,7 +39,7 @@ public class Trade {
 
     public Trade() {}
 
-    public Trade(User user, int stockSymbol, String tradeType, int quantity, double price) {
+    public Trade(User user, String stockSymbol, String tradeType, int quantity, double price) {
         this.user = user;
         this.stockSymbol = stockSymbol;
         this.tradeType = tradeType;
@@ -61,11 +63,11 @@ public class Trade {
         this.user = user;
     }
 
-    public int getStockSymbol() {
+    public String getStockSymbol() {
         return stockSymbol;
     }
 
-    public void setStockSymbol(int stockSymbol) {
+    public void setStockSymbol(String stockSymbol) {
         this.stockSymbol = stockSymbol;
     }
 

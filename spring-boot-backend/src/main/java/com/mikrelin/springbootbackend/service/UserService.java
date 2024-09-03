@@ -8,15 +8,11 @@ import java.util.List;
 
 public interface UserService {
 
+    List<User> findAll();
+
     User findByUsername(String username);
 
     User save(User user);
 
-    void deleteById(int id);
-
-    List<UserStock> getUserStocks();
-
-    UserStock getUserStockByStockSymbol(String stockSymbol);
-
-    List<Trade> getTrades();
+    void deleteByUserId(int id);
 }

@@ -1,5 +1,6 @@
 package com.mikrelin.springbootbackend.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -27,12 +28,14 @@ public class User {
             mappedBy = "user",
             cascade = CascadeType.ALL
     )
+    @JsonManagedReference
     private List<UserStock> stocks;
 
     @OneToMany(
             mappedBy = "user",
             cascade = CascadeType.ALL
     )
+    @JsonManagedReference
     private List<Trade> trades;
 
     public User() {}

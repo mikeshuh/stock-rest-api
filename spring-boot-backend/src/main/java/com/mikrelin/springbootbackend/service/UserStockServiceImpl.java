@@ -10,7 +10,7 @@ public class UserStockServiceImpl implements UserStockService {
     }
 
     @Override
-    public void deleteById(int id) {
+    public void deleteByUserStockId(int id) {
 
     }
 }
