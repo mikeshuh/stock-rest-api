@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "user_stock")
-public class UserStock {
+@Table(name = "stock")
+public class Stock {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,9 +23,9 @@ public class UserStock {
     @Column(name = "stock_symbol")
     private String stockSymbol;
 
-    public UserStock() {}
+    public Stock() {}
 
-    public UserStock(User user, String stockSymbol) {
+    public Stock(User user, String stockSymbol) {
         this.user = user;
         this.stockSymbol = stockSymbol;
     }

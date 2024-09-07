@@ -31,4 +31,14 @@ public class UserRestController {
         user.setId(0);
         return userService.save(user);
     }
+
+    @PutMapping()
+    public User updateUser(@RequestBody User user) {
+        return userService.save(user);
+    }
+
+    @DeleteMapping("/{userId}")
+    public void deleteUser(@PathVariable int userId) {
+        userService.deleteByUserId(userId);
+    }
 }

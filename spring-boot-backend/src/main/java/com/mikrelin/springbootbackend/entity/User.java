@@ -29,7 +29,7 @@ public class User {
             cascade = CascadeType.ALL
     )
     @JsonManagedReference
-    private List<UserStock> stocks;
+    private List<Stock> stocks;
 
     @OneToMany(
             mappedBy = "user",
@@ -78,11 +78,11 @@ public class User {
         this.passwordHash = passwordHash;
     }
 
-    public List<UserStock> getStocks() {
+    public List<Stock> getStocks() {
         return stocks;
     }
 
-    public void setStocks(List<UserStock> stocks) {
+    public void setStocks(List<Stock> stocks) {
         this.stocks = stocks;
     }
 
@@ -94,7 +94,7 @@ public class User {
         this.trades = trades;
     }
 
-    public void add(UserStock stock) {
+    public void add(Stock stock) {
         if (stocks == null) {
             stocks = new ArrayList<>();
         }

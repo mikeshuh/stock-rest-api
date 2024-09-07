@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS user (
 );
 
 -- Step 4: Create the User_Stock Table if it doesn't exist
-CREATE TABLE IF NOT EXISTS user_stock (
+CREATE TABLE IF NOT EXISTS stock (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     stock_symbol VARCHAR(10) NOT NULL,
@@ -34,4 +34,4 @@ CREATE TABLE IF NOT EXISTS trade (
 
 -- Create indexes
 CREATE INDEX idx_user_id_on_trade ON trade(user_id);
-CREATE INDEX idx_user_id_on_user_stock ON user_stock(user_id);
+CREATE INDEX idx_user_id_on_stock ON stock(user_id);

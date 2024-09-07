@@ -10,7 +10,7 @@ INSERT INTO user (username, email, password_hash) VALUES
 ('charlie_brown', 'charlie@example.com', 'hashed_password_5');
 
 -- Insert sample user_stock data
-INSERT INTO user_stock (user_id, stock_symbol) VALUES
+INSERT INTO stock (user_id, stock_symbol) VALUES
 (1, 'AAPL'),
 (1, 'GOOGL'),
 (2, 'AMZN'),
