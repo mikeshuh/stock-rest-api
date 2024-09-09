@@ -9,7 +9,6 @@ import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
-
     private UserRepository userRepository;
 
     @Autowired
@@ -23,8 +22,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User findByUserId(long userId) {
+        return userRepository.findById(userId)
+                .orElse(null);      // make sure to update not found logic
+    }
+
+    @Override
     public User findByUsername(String username) {
-        return userRepository.findByUsername(username);
+        return userRepository.findByUsername(username)
+                .orElse(null);      // make sure to update not found logic
     }
 
     @Override
@@ -33,7 +39,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteByUserId(int id) {
-        userRepository.deleteById(id);
+    public void deleteByUserId(long userId) {
+        userRepository.deleteById(userId);
     }
 }

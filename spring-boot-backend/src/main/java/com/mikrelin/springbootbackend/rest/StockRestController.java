@@ -9,22 +9,40 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/stock")
 public class StockRestController {
-
     private StockService stockService;
 
     public StockRestController(StockService stockService) {
         this.stockService = stockService;
     }
 
-    @GetMapping("/{userId}")
-    public List<Stock> findStockByUserId(@PathVariable int userId) {
-        return stockService.findByUserId(userId);
+    @GetMapping
+    public List<Stock> findAllStocks() {
+        return stockService.findAll();
     }
 
-    @PostMapping()
-    public Stock addStock(@RequestBody Stock stock) {
-        stock.setId(0);
+    @GetMapping("/{stockId}")
+    public Stock findById(@PathVariable long stockId) {
+        return stockService.findByStockId(stockId);
+    }
 
+    @GetMapping("/{ticker}")
+    public List<Stock> findByTicker(@PathVariable String ticker) {
+        return stockService.findByTicker(ticker);
+    }
+
+    @GetMapping("/{companyName}")
+    public List<Stock> findByCompanyName(@PathVariable String companyName) {
+        return stockService.findByCompanyName(companyName);
+    }
+
+    @GetMapping("/{exchange}/{ticker}")
+    public Stock findByExchangeAndTicker(@PathVariable String exchange, @PathVariable String ticker) {
+        return stockService.findByExchangeAndTicker(exchange, ticker);
+    }
+
+    @PostMapping
+    public Stock addStock(@RequestBody Stock stock) {
+        stock.setStockId(0);
         return stockService.save(stock);
     }
 
@@ -33,8 +51,8 @@ public class StockRestController {
         return stockService.save(stock);
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteStock(@PathVariable int id) {
-        stockService.deleteByStockId(id);
+    @DeleteMapping("/{stockId}")
+    public void deleteStock(@PathVariable long stockId) {
+        stockService.deleteByStockId(stockId);
     }
 }

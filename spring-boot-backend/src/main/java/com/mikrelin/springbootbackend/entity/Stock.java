@@ -1,65 +1,114 @@
 package com.mikrelin.springbootbackend.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
-@Entity
-@Table(name = "stock")
-public class Stock {
+import java.util.List;
 
+@Entity
+@Table(
+        name = "stock",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"ticker", "exchange"})
+)
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "stockId"
+)
+public class Stock {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private int id;
+    @Column(name = "stock_id")
+    private long stockId;
 
-    @ManyToOne(
+    @Column(name = "ticker")
+    private String ticker;
+
+    @Column(name = "company_name")
+    private String companyName;
+
+    @Column(name = "exchange")
+    private String exchange;
+
+    @OneToMany(
+            mappedBy = "userStockId.stock",
             fetch = FetchType.LAZY,
-            cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH}
+            cascade = CascadeType.ALL
     )
-    @JoinColumn(name = "user_id")
-    @JsonBackReference
-    private User user;
+    private List<UserStock> userStocks;
 
-    @Column(name = "stock_symbol")
-    private String stockSymbol;
+    @OneToMany(
+            mappedBy = "stock",
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL
+    )
+    private List<Trade> trades;
 
     public Stock() {}
 
-    public Stock(User user, String stockSymbol) {
-        this.user = user;
-        this.stockSymbol = stockSymbol;
+    public Stock(String ticker, String companyName, String exchange) {
+        this.ticker = ticker;
+        this.companyName = companyName;
+        this.exchange = exchange;
     }
 
-    public int getId() {
-        return id;
+    public long getStockId() {
+        return stockId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setStockId(long stockId) {
+        this.stockId = stockId;
     }
 
-    public User getUser() {
-        return user;
+    public String getTicker() {
+        return ticker;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setTicker(String ticker) {
+        this.ticker = ticker;
     }
 
-    public String getStockSymbol() {
-        return stockSymbol;
+    public String getCompanyName() {
+        return companyName;
     }
 
-    public void setStockSymbol(String stockSymbol) {
-        this.stockSymbol = stockSymbol;
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public String getExchange() {
+        return exchange;
+    }
+
+    public void setExchange(String exchange) {
+        this.exchange = exchange;
+    }
+
+    public List<UserStock> getUserStocks() {
+        return userStocks;
+    }
+
+    public void setUserStocks(List<UserStock> userStocks) {
+        this.userStocks = userStocks;
+    }
+
+    public List<Trade> getTrades() {
+        return trades;
+    }
+
+    public void setTrades(List<Trade> trades) {
+        this.trades = trades;
     }
 
     @Override
     public String toString() {
-        return "UserStock{" +
-                "id=" + id +
-                ", user=" + user +
-                ", stockSymbol='" + stockSymbol + '\'' +
+        return "Stock{" +
+                "stockId=" + stockId +
+                ", ticker='" + ticker + '\'' +
+                ", companyName='" + companyName + '\'' +
+                ", exchange='" + exchange + '\'' +
+                ", userStocks=" + userStocks +
+                ", trades=" + trades +
                 '}';
     }
 }

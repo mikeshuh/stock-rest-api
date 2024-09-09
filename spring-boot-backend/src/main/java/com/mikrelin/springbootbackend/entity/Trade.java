@@ -1,29 +1,36 @@
 package com.mikrelin.springbootbackend.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
 
 @Entity
 @Table(name = "trade")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "tradeId"
+)
 public class Trade {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private int id;
+    @Column(name = "trade_id")
+    private long tradeId;
 
     @ManyToOne(
-            fetch = FetchType.LAZY,
+            fetch = FetchType.EAGER,
             cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH}
     )
     @JoinColumn(name = "user_id")
-    @JsonBackReference
     private User user;
 
-    @Column(name = "stock_symbol")
-    private String stockSymbol;
+    @ManyToOne(
+            fetch = FetchType.EAGER,
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH}
+    )
+    @JoinColumn(name = "stock_id")
+    private Stock stock;
 
     @Column(name = "trade_type")
     private String tradeType;
@@ -34,25 +41,26 @@ public class Trade {
     @Column(name = "price")
     private double price;
 
-    @Column(name = "executed_at")
-    private Timestamp executedAt;
+    @Column(name = "time_executed")
+    private Timestamp timeExecuted;
 
     public Trade() {}
 
-    public Trade(User user, String stockSymbol, String tradeType, int quantity, double price) {
+    public Trade(User user, Stock stock, String tradeType, int quantity, double price) {
         this.user = user;
-        this.stockSymbol = stockSymbol;
+        this.stock = stock;
         this.tradeType = tradeType;
         this.quantity = quantity;
         this.price = price;
+        this.timeExecuted = new Timestamp(System.currentTimeMillis());
     }
 
-    public int getId() {
-        return id;
+    public long getTradeId() {
+        return tradeId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setTradeId(long tradeId) {
+        this.tradeId = tradeId;
     }
 
     public User getUser() {
@@ -63,12 +71,12 @@ public class Trade {
         this.user = user;
     }
 
-    public String getStockSymbol() {
-        return stockSymbol;
+    public Stock getStock() {
+        return stock;
     }
 
-    public void setStockSymbol(String stockSymbol) {
-        this.stockSymbol = stockSymbol;
+    public void setStock(Stock stock) {
+        this.stock = stock;
     }
 
     public String getTradeType() {
@@ -95,24 +103,24 @@ public class Trade {
         this.price = price;
     }
 
-    public Timestamp getExecutedAt() {
-        return executedAt;
+    public Timestamp getTimeExecuted() {
+        return timeExecuted;
     }
 
-    public void setExecutedAt(Timestamp executedAt) {
-        this.executedAt = executedAt;
+    public void setTimeExecuted(Timestamp timeExecuted) {
+        this.timeExecuted = timeExecuted;
     }
 
     @Override
     public String toString() {
         return "Trade{" +
-                "id=" + id +
+                "tradeId=" + tradeId +
                 ", user=" + user +
-                ", stockSymbol=" + stockSymbol +
+                ", stock=" + stock +
                 ", tradeType='" + tradeType + '\'' +
                 ", quantity=" + quantity +
                 ", price=" + price +
-                ", executedAt=" + executedAt +
+                ", timeExecuted=" + timeExecuted +
                 '}';
     }
 }

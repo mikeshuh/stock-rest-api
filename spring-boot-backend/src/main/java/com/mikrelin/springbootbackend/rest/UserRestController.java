@@ -9,16 +9,20 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/user")
 public class UserRestController {
-
     private UserService userService;
 
     public UserRestController(UserService userService) {
         this.userService = userService;
     }
 
-    @GetMapping()
+    @GetMapping
     public List<User> findAllUsers() {
         return userService.findAll();
+    }
+
+    @GetMapping("/{userId}")
+    public User findById(@PathVariable long userId) {
+        return userService.findByUserId(userId);
     }
 
     @GetMapping("/{username}")
@@ -26,9 +30,9 @@ public class UserRestController {
         return userService.findByUsername(username);
     }
 
-    @PostMapping()
+    @PostMapping
     public User addUser(@RequestBody User user) {
-        user.setId(0);
+        user.setUserId(0);
         return userService.save(user);
     }
 
@@ -38,7 +42,7 @@ public class UserRestController {
     }
 
     @DeleteMapping("/{userId}")
-    public void deleteUser(@PathVariable int userId) {
+    public void deleteUser(@PathVariable long userId) {
         userService.deleteByUserId(userId);
     }
 }

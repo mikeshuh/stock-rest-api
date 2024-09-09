@@ -9,7 +9,6 @@ import java.util.List;
 
 @Service
 public class StockServiceImpl implements StockService {
-
     private StockRepository stockRepository;
 
     @Autowired
@@ -18,17 +17,39 @@ public class StockServiceImpl implements StockService {
     }
 
     @Override
+    public List<Stock> findAll() {
+        return stockRepository.findAll();
+    }
+
+    @Override
+    public Stock findByStockId(long stockId) {
+        return stockRepository.findById(stockId)
+                .orElse(null);      // make sure to update not found logic
+    }
+
+    @Override
+    public List<Stock> findByTicker(String ticker) {
+        return stockRepository.findByTicker(ticker);
+    }
+
+    @Override
+    public List<Stock> findByCompanyName(String companyName) {
+        return stockRepository.findByCompanyName(companyName);
+    }
+
+    @Override
+    public Stock findByExchangeAndTicker(String exchange, String ticker) {
+        return stockRepository.findByExchangeAndTicker(exchange, ticker)
+                .orElse(null);      // make sure to update not found logic
+    }
+
+    @Override
     public Stock save(Stock stock) {
         return stockRepository.save(stock);
     }
 
     @Override
-    public void deleteByStockId(int id) {
-        stockRepository.deleteById(id);
-    }
-
-    @Override
-    public List<Stock> findByUserId(int userId) {
-        return stockRepository.findByUserId(userId);
+    public void deleteByStockId(long stockId) {
+        stockRepository.deleteById(stockId);
     }
 }

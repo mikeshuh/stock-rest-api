@@ -1,19 +1,23 @@
 package com.mikrelin.springbootbackend.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Entity
 @Table(name="user")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "userId"
+)
 public class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private int id;
+    @Column(name = "user_id")
+    private long userId;
 
     @Column(name = "username")
     private String username;
@@ -24,18 +28,21 @@ public class User {
     @Column(name = "password_hash")
     private String passwordHash;
 
+    @Column(name = "created_at")
+    private Timestamp createdAt;
+
     @OneToMany(
-            mappedBy = "user",
+            mappedBy = "userStockId.user",
+            fetch = FetchType.LAZY,
             cascade = CascadeType.ALL
     )
-    @JsonManagedReference
-    private List<Stock> stocks;
+    private List<UserStock> userStocks;
 
     @OneToMany(
             mappedBy = "user",
+            fetch = FetchType.LAZY,
             cascade = CascadeType.ALL
     )
-    @JsonManagedReference
     private List<Trade> trades;
 
     public User() {}
@@ -44,14 +51,15 @@ public class User {
         this.username = username;
         this.email = email;
         this.passwordHash = passwordHash;
+        this.createdAt = new Timestamp(System.currentTimeMillis());
     }
 
-    public int getId() {
-        return id;
+    public long getUserId() {
+        return userId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 
     public String getUsername() {
@@ -78,12 +86,20 @@ public class User {
         this.passwordHash = passwordHash;
     }
 
-    public List<Stock> getStocks() {
-        return stocks;
+    public Timestamp getCreatedAt() {
+        return createdAt;
     }
 
-    public void setStocks(List<Stock> stocks) {
-        this.stocks = stocks;
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public List<UserStock> getUserStocks() {
+        return userStocks;
+    }
+
+    public void setUserStocks(List<UserStock> userStocks) {
+        this.userStocks = userStocks;
     }
 
     public List<Trade> getTrades() {
@@ -94,28 +110,16 @@ public class User {
         this.trades = trades;
     }
 
-    public void add(Stock stock) {
-        if (stocks == null) {
-            stocks = new ArrayList<>();
-        }
-        stocks.add(stock);
-        stock.setUser(this);
-    }
-
-    public void add(Trade trade) {
-        if (trades == null) {
-            trades = new ArrayList<>();
-        }
-        trades.add(trade);
-        trade.setUser(this);
-    }
-
     @Override
     public String toString() {
         return "User{" +
-                "id=" + id +
+                "userId=" + userId +
                 ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
+                ", passwordHash='" + passwordHash + '\'' +
+                ", createdAt=" + createdAt +
+                ", userStocks=" + userStocks +
+                ", trades=" + trades +
                 '}';
     }
 }
