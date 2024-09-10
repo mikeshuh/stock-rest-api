@@ -8,10 +8,6 @@ import java.sql.Timestamp;
 
 @Entity
 @Table(name = "user_stock")
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "userStockId"
-)
 public class UserStock {
     @EmbeddedId
     private UserStockId userStockId;
@@ -47,7 +43,6 @@ public class UserStock {
     public void setUserStockId(UserStockId userStockId) {
         this.userStockId = userStockId;
     }
-
 
     public double getAllocatedAmount() {
         return allocatedAmount;

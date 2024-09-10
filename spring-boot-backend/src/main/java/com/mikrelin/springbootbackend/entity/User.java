@@ -1,6 +1,7 @@
 package com.mikrelin.springbootbackend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
@@ -9,10 +10,6 @@ import java.util.List;
 
 @Entity
 @Table(name="user")
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "userId"
-)
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,6 +33,7 @@ public class User {
             fetch = FetchType.LAZY,
             cascade = CascadeType.ALL
     )
+    @JsonIgnore
     private List<UserStock> userStocks;
 
     @OneToMany(
@@ -43,6 +41,7 @@ public class User {
             fetch = FetchType.LAZY,
             cascade = CascadeType.ALL
     )
+    @JsonIgnore
     private List<Trade> trades;
 
     public User() {}

@@ -13,7 +13,6 @@ public class UserStockId implements Serializable {
             cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH}
     )
     @JoinColumn(name = "user_id")
-    @JsonIgnore
     private User user;
 
     @ManyToOne(
@@ -21,7 +20,6 @@ public class UserStockId implements Serializable {
             cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH}
     )
     @JoinColumn(name = "stock_id")
-    @JsonIgnore
     private Stock stock;
 
     // Default constructor

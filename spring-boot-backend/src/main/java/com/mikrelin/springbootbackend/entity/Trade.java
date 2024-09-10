@@ -8,10 +8,6 @@ import java.sql.Timestamp;
 
 @Entity
 @Table(name = "trade")
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "tradeId"
-)
 public class Trade {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
