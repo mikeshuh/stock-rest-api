@@ -20,12 +20,12 @@ public class UserRestController {
         return userService.findAll();
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping("/id/{userId}")
     public User findById(@PathVariable long userId) {
         return userService.findByUserId(userId);
     }
 
-    @GetMapping("/{username}")
+    @GetMapping("/username/{username}")
     public User findByUsername(@PathVariable String username) {
         return userService.findByUsername(username);
     }

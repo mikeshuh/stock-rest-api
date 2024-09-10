@@ -1,5 +1,6 @@
 package com.mikrelin.springbootbackend.rest;
 
+import com.mikrelin.springbootbackend.dto.TradeDTO;
 import com.mikrelin.springbootbackend.entity.Trade;
 import com.mikrelin.springbootbackend.service.TradeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,28 +19,28 @@ public class TradeRestController {
     }
 
     @GetMapping
-    public List<Trade> findAllTrades() {
+    public List<TradeDTO> findAllTrades() {
         return tradeService.findAll();
     }
 
-    @GetMapping("/{tradeId}")
-    public Trade findById(@PathVariable long tradeId) {
+    @GetMapping("/id/{tradeId}")
+    public TradeDTO findById(@PathVariable long tradeId) {
         return tradeService.findByTradeId(tradeId);
     }
 
-    @GetMapping("/{userId}")
-    public List<Trade> findByUserId(@PathVariable long userId) {
+    @GetMapping("/user/{userId}")
+    public List<TradeDTO> findByUserId(@PathVariable long userId) {
         return tradeService.findByUserId(userId);
     }
 
     @PostMapping
-    public Trade addTrade(@RequestBody Trade trade) {
-//        trade.setUserId(0);
+    public TradeDTO addTrade(@RequestBody Trade trade) {
+        trade.setTradeId(0);
         return tradeService.save(trade);
     }
 
     @PutMapping
-    public Trade updateTrade(@RequestBody Trade trade) {
+    public TradeDTO updateTrade(@RequestBody Trade trade) {
         return tradeService.save(trade);
     }
 

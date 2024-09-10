@@ -20,17 +20,17 @@ public class StockRestController {
         return stockService.findAll();
     }
 
-    @GetMapping("/{stockId}")
+    @GetMapping("/id/{stockId}")
     public Stock findById(@PathVariable long stockId) {
         return stockService.findByStockId(stockId);
     }
 
-    @GetMapping("/{ticker}")
+    @GetMapping("/ticker/{ticker}")
     public List<Stock> findByTicker(@PathVariable String ticker) {
         return stockService.findByTicker(ticker);
     }
 
-    @GetMapping("/{companyName}")
+    @GetMapping("/company/{companyName}")
     public List<Stock> findByCompanyName(@PathVariable String companyName) {
         return stockService.findByCompanyName(companyName);
     }

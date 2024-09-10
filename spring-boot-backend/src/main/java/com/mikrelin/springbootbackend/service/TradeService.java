@@ -1,17 +1,18 @@
 package com.mikrelin.springbootbackend.service;
 
+import com.mikrelin.springbootbackend.dto.TradeDTO;
 import com.mikrelin.springbootbackend.entity.Trade;
 
 import java.util.List;
 
 public interface TradeService {
-    List<Trade> findAll();
+    List<TradeDTO> findAll();
 
-    Trade findByTradeId(long tradeId);
+    TradeDTO findByTradeId(long tradeId);
 
-    List<Trade> findByUserId(long userId);
+    List<TradeDTO> findByUserId(long userId);
 
-    Trade save(Trade trade);
+    TradeDTO save(Trade trade);
 
     void deleteByTradeId(long tradeId);
 }

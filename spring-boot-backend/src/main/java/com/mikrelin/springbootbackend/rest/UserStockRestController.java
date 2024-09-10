@@ -1,5 +1,6 @@
 package com.mikrelin.springbootbackend.rest;
 
+import com.mikrelin.springbootbackend.dto.UserStockDTO;
 import com.mikrelin.springbootbackend.entity.UserStock;
 import com.mikrelin.springbootbackend.service.UserStockService;
 import org.springframework.web.bind.annotation.*;
@@ -16,27 +17,27 @@ public class UserStockRestController {
     }
 
     @GetMapping
-    public List<UserStock> findAllUserStock() {
+    public List<UserStockDTO> findAllUserStock() {
         return userStockService.findAll();
     }
 
     @GetMapping("/{userId}")
-    public List<UserStock> findByUserId(@PathVariable long userId) {
+    public List<UserStockDTO> findByUserId(@PathVariable long userId) {
         return userStockService.findByUserId(userId);
     }
 
     @GetMapping("/{userId}/{stockId}")
-    public UserStock findByUserStockId(@PathVariable long userId, @PathVariable long stockId) {
+    public UserStockDTO findByUserStockId(@PathVariable long userId, @PathVariable long stockId) {
         return userStockService.findByUserIdAndStockId(userId, stockId);
     }
 
     @PostMapping
-    public UserStock addUserStock(@RequestBody UserStock userStock) {
+    public UserStockDTO addUserStock(@RequestBody UserStock userStock) {
         return userStockService.save(userStock);
     }
 
     @PutMapping
-    public UserStock updateUserStock(@RequestBody UserStock userStock) {
+    public UserStockDTO updateUserStock(@RequestBody UserStock userStock) {
         return userStockService.save(userStock);
     }
 
