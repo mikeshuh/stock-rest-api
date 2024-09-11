@@ -111,8 +111,8 @@ public class Trade {
     public String toString() {
         return "Trade{" +
                 "tradeId=" + tradeId +
-                ", user=" + user +
-                ", stock=" + stock +
+                ", userId=" + user.getUserId() +
+                ", stockId=" + stock.getStockId() +
                 ", tradeType='" + tradeType + '\'' +
                 ", quantity=" + quantity +
                 ", price=" + price +

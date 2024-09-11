@@ -62,8 +62,8 @@ public class UserStockId implements Serializable {
     @Override
     public String toString() {
         return "UserStockId{" +
-                "user=" + user +
-                ", stock=" + stock +
+                "userId=" + user.getUserId() +
+                ", stockId=" + stock.getStockId() +
                 '}';
     }
 }

@@ -106,8 +106,6 @@ public class Stock {
                 ", ticker='" + ticker + '\'' +
                 ", companyName='" + companyName + '\'' +
                 ", exchange='" + exchange + '\'' +
-                ", userStocks=" + userStocks +
-                ", trades=" + trades +
                 '}';
     }
 }
