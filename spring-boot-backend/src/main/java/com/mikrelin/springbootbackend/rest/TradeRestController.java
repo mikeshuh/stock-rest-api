@@ -34,14 +34,14 @@ public class TradeRestController {
     }
 
     @PostMapping
-    public TradeDTO addTrade(@RequestBody Trade trade) {
-        trade.setTradeId(0);
-        return tradeService.save(trade);
+    public TradeDTO addTrade(@RequestBody TradeDTO tradeDTO) {
+        tradeDTO.setTradeId(0);
+        return tradeService.save(tradeDTO);
     }
 
     @PutMapping
-    public TradeDTO updateTrade(@RequestBody Trade trade) {
-        return tradeService.save(trade);
+    public TradeDTO updateTrade(@RequestBody TradeDTO tradeDTO) {
+        return tradeService.save(tradeDTO);
     }
 
     @DeleteMapping("/{tradeId}")

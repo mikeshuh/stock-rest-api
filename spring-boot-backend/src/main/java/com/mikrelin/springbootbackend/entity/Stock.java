@@ -1,10 +1,9 @@
 package com.mikrelin.springbootbackend.entity;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -91,12 +90,26 @@ public class Stock {
         this.userStocks = userStocks;
     }
 
+    public void addUserStock(UserStock userStock) {
+        if (this.userStocks == null) {
+            this.userStocks = new ArrayList<>();
+        }
+        this.userStocks.add(userStock);
+    }
+
     public List<Trade> getTrades() {
         return trades;
     }
 
     public void setTrades(List<Trade> trades) {
         this.trades = trades;
+    }
+
+    public void addTrade(Trade trade) {
+        if (this.trades == null) {
+            this.trades = new ArrayList<>();
+        }
+        this.trades.add(trade);
     }
 
     @Override

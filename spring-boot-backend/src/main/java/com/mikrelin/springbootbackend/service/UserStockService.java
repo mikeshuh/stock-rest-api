@@ -12,7 +12,7 @@ public interface UserStockService {
 
     UserStockDTO findByUserIdAndStockId(long userId, long stockId);
 
-    UserStockDTO save(UserStock userStock);
+    UserStockDTO save(UserStockDTO userStockDTO);
 
     void deleteByUserIdAndStockId(long userId, long stockId);
 }

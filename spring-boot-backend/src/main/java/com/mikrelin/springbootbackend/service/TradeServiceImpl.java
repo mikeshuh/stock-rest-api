@@ -1,12 +1,12 @@
 package com.mikrelin.springbootbackend.service;
 
+import com.mikrelin.springbootbackend.dao.StockRepository;
 import com.mikrelin.springbootbackend.dao.TradeRepository;
 import com.mikrelin.springbootbackend.dao.UserRepository;
 import com.mikrelin.springbootbackend.dto.TradeDTO;
-import com.mikrelin.springbootbackend.dto.UserStockDTO;
+import com.mikrelin.springbootbackend.entity.Stock;
 import com.mikrelin.springbootbackend.entity.Trade;
 import com.mikrelin.springbootbackend.entity.User;
-import com.mikrelin.springbootbackend.entity.UserStock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,11 +17,13 @@ import java.util.stream.Collectors;
 public class TradeServiceImpl implements TradeService {
     private TradeRepository tradeRepository;
     private UserRepository userRepository;
+    private StockRepository stockRepository;
 
     @Autowired
-    public TradeServiceImpl(TradeRepository tradeRepository, UserRepository userRepository) {
+    public TradeServiceImpl(TradeRepository tradeRepository, UserRepository userRepository, StockRepository stockRepository) {
         this.tradeRepository = tradeRepository;
         this.userRepository = userRepository;
+        this.stockRepository = stockRepository;
     }
 
     // This method handles the conversion from Trade entity to TradeDTO
@@ -51,6 +53,27 @@ public class TradeServiceImpl implements TradeService {
                 .collect(Collectors.toList());
     }
 
+    private Trade convertToTrade(TradeDTO tradeDTO) {
+        Trade trade = new Trade();
+
+        // Fetch the User and Stock entities based on their IDs in the DTO
+        // Assuming you have some service/repository method to retrieve these entities by their IDs.
+        User user = userRepository.findById(tradeDTO.getUserId())  // Fetch the user based on userId
+                .orElse(null);      // temp fix
+        Stock stock = stockRepository.findById(tradeDTO.getStockId()) // Fetch the stock based on stockId
+                .orElse(null);      // tempfix
+
+        trade.setTradeId(tradeDTO.getTradeId());
+        trade.setUser(user);
+        trade.setStock(stock);
+        trade.setTradeType(tradeDTO.getTradeType());
+        trade.setQuantity(tradeDTO.getQuantity());
+        trade.setPrice(tradeDTO.getPrice());
+        trade.setTimeExecuted(tradeDTO.getTimeExecuted());
+
+        return trade;
+    }
+
     @Override
     public List<TradeDTO> findAll() {
         return convertToDTOList(tradeRepository.findAll());
@@ -70,7 +93,8 @@ public class TradeServiceImpl implements TradeService {
     }
 
     @Override
-    public TradeDTO save(Trade trade) {
+    public TradeDTO save(TradeDTO tradeDTO) {
+        Trade trade = convertToTrade(tradeDTO);
         return convertToDTO(tradeRepository.save(trade));
     }
 

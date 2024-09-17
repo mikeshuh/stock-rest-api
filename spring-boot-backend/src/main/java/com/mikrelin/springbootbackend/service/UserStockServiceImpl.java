@@ -53,6 +53,29 @@ public class UserStockServiceImpl implements UserStockService {
                 .collect(Collectors.toList());
     }
 
+    private UserStock convertToUserStock(UserStockDTO userStockDTO) {
+        UserStock userStock = new UserStock();
+        // Fetch the User and Stock entities based on their IDs in the DTO
+        // Assuming you have some service/repository method to retrieve these entities by their IDs.
+        User user = userRepository.findById(userStockDTO.getUserId())  // Fetch the user based on userId
+                .orElse(null);      // temp fix
+        Stock stock = stockRepository.findById(userStockDTO.getStockId()) // Fetch the stock based on stockId
+            .orElse(null);      // tempfix
+
+        // Set the userStockId by using the fetched user and stock
+        UserStockId userStockId = new UserStockId(user, stock);
+        userStock.setUserStockId(userStockId);
+
+        // Set the other fields from the DTO
+        userStock.setAllocatedAmount(userStockDTO.getAllocatedAmount());
+        userStock.setQuantity(userStockDTO.getQuantity());
+        userStock.setPrice(userStockDTO.getPrice());
+        userStock.setLastUpdated(userStockDTO.getLastUpdated());
+
+        return userStock;
+    }
+
+
     @Override
     public List<UserStockDTO> findAll() {
         return convertToDTOList(userStockRepository.findAll());
@@ -76,7 +99,8 @@ public class UserStockServiceImpl implements UserStockService {
     }
 
     @Override
-    public UserStockDTO save(UserStock userStock) {
+    public UserStockDTO save(UserStockDTO userStockDTO) {
+        UserStock userStock = convertToUserStock(userStockDTO);
         return convertToDTO(userStockRepository.save(userStock));
     }
 

@@ -1,5 +1,7 @@
 package com.mikrelin.springbootbackend.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.sql.Timestamp;
 
 public class UserStockDTO {
@@ -8,6 +10,8 @@ public class UserStockDTO {
     private double allocatedAmount;
     private int quantity;
     private double price;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private Timestamp lastUpdated;
 
     public UserStockDTO() {}

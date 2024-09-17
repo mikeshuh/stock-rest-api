@@ -32,13 +32,13 @@ public class UserStockRestController {
     }
 
     @PostMapping
-    public UserStockDTO addUserStock(@RequestBody UserStock userStock) {
-        return userStockService.save(userStock);
+    public UserStockDTO addUserStock(@RequestBody UserStockDTO userStockDTO) {
+        return userStockService.save(userStockDTO);
     }
 
     @PutMapping
-    public UserStockDTO updateUserStock(@RequestBody UserStock userStock) {
-        return userStockService.save(userStock);
+    public UserStockDTO updateUserStock(@RequestBody UserStockDTO userStockDTO) {
+        return userStockService.save(userStockDTO);
     }
 
     @DeleteMapping("/{userId}/{stockId}")
