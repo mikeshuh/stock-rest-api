@@ -1,54 +1,106 @@
--- Use the stock_trading database
+-- Switch to the stock_trading database
 USE stock_trading;
 
--- Insert into user table
-INSERT INTO user (username, email, password_hash, created_at)
-VALUES
-('john_doe', 'john@example.com', 'hashed_password_1', NOW()),
-('jane_doe', 'jane@example.com', 'hashed_password_2', NOW()),
-('alice_smith', 'alice@example.com', 'hashed_password_3', NOW());
+-- Insert 1,000 users
+DELIMITER //
+CREATE PROCEDURE InsertUsers()
+BEGIN
+    DECLARE i INT DEFAULT 1;
+    WHILE i <= 1000 DO
+        INSERT INTO user (username, email, password_hash, created_at)
+        VALUES (CONCAT('user_', i), CONCAT('user_', i, '@example.com'), CONCAT('hashed_password_', i), NOW());
+        SET i = i + 1;
+    END WHILE;
+END //
+DELIMITER ;
 
--- Insert into stock table
-INSERT INTO stock (ticker, company_name, exchange)
-VALUES
-('AAPL', 'Apple Inc.', 'NASDAQ'),
-('GOOGL', 'Alphabet Inc.', 'NASDAQ'),
-('TSLA', 'Tesla Inc.', 'NASDAQ');
+CALL InsertUsers();
+DROP PROCEDURE InsertUsers;
 
--- Insert into user_stock table
--- Each user owns all three stocks
-INSERT INTO user_stock (user_id, stock_id, allocated_amount, quantity, price, last_updated)
-VALUES
--- John Doe's holdings
-(1, 1, 15000.00, 10, 1500.00, NOW()), -- John owns 10 shares of Apple at $1500 each
-(1, 2, 12000.00, 3, 4000.00, NOW()), -- John owns 3 shares of Google at $4000 each
-(1, 3, 10000.00, 2, 5000.00, NOW()), -- John owns 2 shares of Tesla at $5000 each
+-- Insert 1,000 stocks
+DELIMITER //
+CREATE PROCEDURE InsertStocks()
+BEGIN
+    DECLARE i INT DEFAULT 1;
+    WHILE i <= 1000 DO
+        INSERT INTO stock (ticker, company_name, exchange)
+        VALUES (CONCAT('STK', i), CONCAT('Company_', i), 'NASDAQ');
+        SET i = i + 1;
+    END WHILE;
+END //
+DELIMITER ;
 
--- Jane Doe's holdings
-(2, 1, 7500.00, 5, 1500.00, NOW()),  -- Jane owns 5 shares of Apple at $1500 each
-(2, 2, 16000.00, 4, 4000.00, NOW()), -- Jane owns 4 shares of Google at $4000 each
-(2, 3, 5000.00, 1, 5000.00, NOW()),  -- Jane owns 1 share of Tesla at $5000
+CALL InsertStocks();
+DROP PROCEDURE InsertStocks;
 
--- Alice Smith's holdings
-(3, 1, 3000.00, 2, 1500.00, NOW()),  -- Alice owns 2 shares of Apple at $1500 each
-(3, 2, 20000.00, 5, 4000.00, NOW()), -- Alice owns 5 shares of Google at $4000 each
-(3, 3, 25000.00, 5, 5000.00, NOW()); -- Alice owns 5 shares of Tesla at $5000 each
+-- Insert 50 stocks per user into the user_stock table (with batching)
+DELIMITER //
+CREATE PROCEDURE InsertUserStocks()
+BEGIN
+    DECLARE user_id INT DEFAULT 1;
+    DECLARE batch_size INT DEFAULT 10; -- Number of users processed in one batch
+    DECLARE max_stocks INT DEFAULT 50; -- Stocks per user
+    DECLARE stock_id INT DEFAULT 1;
 
--- Insert into trade table
--- Each user makes three trades (one for each stock)
-INSERT INTO trade (user_id, stock_id, trade_type, quantity, price, time_executed)
-VALUES
--- John Doe's trades
-(1, 1, 'BUY', 5, 1500.00, NOW()),   -- John buys 5 shares of Apple at $1500 each
-(1, 2, 'SELL', 1, 4000.00, NOW()),  -- John sells 1 share of Google at $4000
-(1, 3, 'BUY', 2, 5000.00, NOW()),   -- John buys 2 shares of Tesla at $5000 each
+    START TRANSACTION;
 
--- Jane Doe's trades
-(2, 1, 'BUY', 3, 1500.00, NOW()),   -- Jane buys 3 shares of Apple at $1500 each
-(2, 2, 'BUY', 2, 4000.00, NOW()),   -- Jane buys 2 shares of Google at $4000 each
-(2, 3, 'SELL', 1, 5000.00, NOW()),  -- Jane sells 1 share of Tesla at $5000
+    WHILE user_id <= 1000 DO
+        SET stock_id = 1;
+        WHILE stock_id <= max_stocks DO
+            INSERT INTO user_stock (user_id, stock_id, allocated_amount, quantity, price, last_updated)
+            VALUES (user_id, stock_id, RAND() * 10000, FLOOR(RAND() * 100) + 1, RAND() * 500, NOW());
+            SET stock_id = stock_id + 1;
+        END WHILE;
 
--- Alice Smith's trades
-(3, 1, 'SELL', 1, 1500.00, NOW()),  -- Alice sells 1 share of Apple at $1500
-(3, 2, 'BUY', 3, 4000.00, NOW()),   -- Alice buys 3 shares of Google at $4000 each
-(3, 3, 'SELL', 2, 5000.00, NOW());  -- Alice sells 2 shares of Tesla at $5000 each
+        SET user_id = user_id + 1;
+
+        -- Commit after processing a batch of users
+        IF MOD(user_id, batch_size) = 0 THEN
+            COMMIT;
+            START TRANSACTION;
+        END IF;
+    END WHILE;
+
+    COMMIT; -- Final commit for remaining users
+END //
+DELIMITER ;
+
+CALL InsertUserStocks();
+DROP PROCEDURE InsertUserStocks;
+
+-- Insert 100 trades per user into the trade table (with batching)
+DELIMITER //
+CREATE PROCEDURE InsertTrades()
+BEGIN
+    DECLARE user_id INT DEFAULT 1;
+    DECLARE trade_count INT DEFAULT 1;
+    DECLARE batch_size INT DEFAULT 10; -- Number of users processed in one batch
+    DECLARE max_trades INT DEFAULT 100; -- Trades per user
+
+    START TRANSACTION;
+
+    WHILE user_id <= 1000 DO
+        SET trade_count = 1;
+        WHILE trade_count <= max_trades DO
+            INSERT INTO trade (user_id, stock_id, trade_type, quantity, price, time_executed)
+            VALUES (user_id, FLOOR(RAND() * 1000) + 1, 
+                   IF(RAND() > 0.5, 'BUY', 'SELL'), 
+                   FLOOR(RAND() * 100) + 1, RAND() * 500, NOW());
+            SET trade_count = trade_count + 1;
+        END WHILE;
+
+        SET user_id = user_id + 1;
+
+        -- Commit after processing a batch of users
+        IF MOD(user_id, batch_size) = 0 THEN
+            COMMIT;
+            START TRANSACTION;
+        END IF;
+    END WHILE;
+
+    COMMIT; -- Final commit for remaining users
+END //
+DELIMITER ;
+
+CALL InsertTrades();
+DROP PROCEDURE InsertTrades;
