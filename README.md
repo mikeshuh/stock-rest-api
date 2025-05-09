@@ -1,1 +1,1 @@
-# stock-prediction
+# stock-rest-api
